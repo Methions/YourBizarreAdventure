@@ -1,0 +1,48 @@
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+local AllMods = {
+    "UzuKee", "BLOODTARO", "Dxscape", "Myst_Ari", "eurycIea", 
+    "v_cks", "ezguap", "Tsuzutou", "ReferToWithered", "Illus0", 
+    "Pyreiz", "VoidedFlame", "ROUXABOUT", "mixeriiiiiing", 
+    "MichDrajo", "hayst4", "ElmoNYC", "Core_CorruptionF", 
+    "Brillcake", "AxionTheRevenant", "sammyj0n", "ViveLesPatat", 
+    "Zimvasion", "vertiify", "redfoxP", "cakesucker05", "00kamiMio", 
+    "itscanii", "SirDeviloper", "0nkka", "Ramdharam", 
+    "Olliebutheskenny", "cswag_code", "TwoGio", "KoleRTX2", 
+    "Wilpuri", "remendyy", "SpaceNuggies", "CrimsonBeheIit", "warycoolio"
+}
+
+local ModLookup = {}
+for _, name in ipairs(AllMods) do
+    ModLookup[name] = true
+end
+
+local function isMod(player)
+    return ModLookup[player.Name] == true or ModLookup[player.DisplayName] == true
+end
+
+local function panicKick(modName)
+    local kickMsg = "Found Mod: " .. modName .. " | Reason: You were kicked, mod has been found"
+    
+    task.wait(0.1)
+    
+    LocalPlayer:Kick(kickMsg)
+end
+
+for _, player in ipairs(Players:GetPlayers()) do
+    if player ~= LocalPlayer and isMod(player) then
+        local foundName = ModLookup[player.Name] and player.Name or player.DisplayName
+        panicKick(foundName)
+        return
+    end
+end
+
+Players.PlayerAdded:Connect(function(player)
+    task.wait(0.5)
+    
+    if isMod(player) then
+        local foundName = ModLookup[player.Name] and player.Name or player.DisplayName
+        panicKick(foundName)
+    end
+end)
